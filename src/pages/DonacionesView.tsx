@@ -9,21 +9,18 @@ export default function DonacionesView() {
   const [donaciones, setDonaciones] = useState<Donacion[]>([]);
   const [proyectos, setProyectos] = useState<Proyecto[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // Estado del formulario
   const initialForm = {
     donante_nombre: '',
     monto: 0,
     descripcion: '',
     tipo_donacion: 'MONETARIA' as TipoDonacion,
-    id_proyecto: '' // String temporal para el select
+    id_proyecto: ''
   };
   const [form, setForm] = useState(initialForm);
 
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
-      // Cargamos ambas listas en paralelo para ganar velocidad
       const [donacionesData, proyectosData] = await Promise.all([
         api.getAll<Donacion>('donaciones', DONACIONES_MOCK),
         api.getAll<Proyecto>('proyectos', PROYECTOS_MOCK)
@@ -41,17 +38,14 @@ export default function DonacionesView() {
       ...form,
       id_donacion: Date.now(),
       fecha: new Date().toISOString().split('T')[0],
-      // Convertimos el string del select a number, o undefined si está vacío
       id_proyecto: form.id_proyecto ? Number(form.id_proyecto) : undefined
     };
 
   await api.create<Donacion>('donaciones', newDonacion);
-    setDonaciones([...donaciones, newDonacion]); // Actualización optimista
+    setDonaciones([...donaciones, newDonacion]);
     setForm(initialForm);
     alert('Donación registrada con éxito');
   };
-
-  // Cálculos para las tarjetas
   const totalMonetario = donaciones
     .filter(d => d.tipo_donacion === 'MONETARIA')
     .reduce((acc, curr) => acc + curr.monto, 0);
@@ -64,11 +58,9 @@ export default function DonacionesView() {
     <div className="max-w-6xl mx-auto">
       <h2 className="text-2xl font-bold text-slate-800 mb-6">Gestión de Donaciones</h2>
 
-      {/* Componente de Estadísticas */}
       <DonationStats totalMonetario={totalMonetario} totalEspecie={totalEspecie} />
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Formulario de Registro */}
         <div className="lg:col-span-1">
           <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200 sticky top-24">
             <h3 className="font-semibold text-lg mb-4 flex items-center gap-2">
@@ -130,7 +122,6 @@ export default function DonacionesView() {
           </div>
         </div>
 
-        {/* Lista de Últimas Donaciones */}
         <div className="lg:col-span-2">
           <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
             <div className="p-4 border-b border-slate-100 bg-slate-50">
