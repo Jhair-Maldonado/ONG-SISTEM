@@ -9,15 +9,11 @@ export default function ReportesView() {
   const [proyectos, setProyectos] = useState<Proyecto[]>([]);
   const [loading, setLoading] = useState(true);
   const [chartData, setChartData] = useState<{ mes: string; monto: number; altura: number }[]>([]);
-
-  // 1. PRIMERO: Definimos la función auxiliar (Lógica de Negocio)
-  // Al estar definida aquí arriba, el useEffect ya la puede "ver" y usar.
   const procesarGrafico = (data: Donacion[]) => {
     const agrupado = data
       .filter(d => d.tipo_donacion === 'MONETARIA')
       .reduce((acc, curr) => {
         const fecha = new Date(curr.fecha);
-        // Usamos 'short' para obtener "ene", "feb", etc.
         const mesKey = fecha.toLocaleString('es-PE', { month: 'short' }); 
         acc[mesKey] = (acc[mesKey] || 0) + Number(curr.monto);
         return acc;
@@ -26,7 +22,7 @@ export default function ReportesView() {
     const mesesOrden = ['ene', 'feb', 'mar', 'abr', 'may', 'jun', 'jul', 'ago', 'sep', 'oct', 'nov', 'dic'];
     
     const valores = Object.values(agrupado);
-    const maxVal = Math.max(...valores, 1); // Evitamos dividir por 0
+    const maxVal = Math.max(...valores, 1);
 
     const resultado = Object.keys(agrupado)
       .sort((a, b) => mesesOrden.indexOf(a) - mesesOrden.indexOf(b))
@@ -38,8 +34,6 @@ export default function ReportesView() {
 
     setChartData(resultado);
   };
-
-  // 2. SEGUNDO: El Efecto que carga los datos
   useEffect(() => {
     const loadData = async () => {
       setLoading(true);
@@ -50,15 +44,13 @@ export default function ReportesView() {
 
       setDonaciones(donacionesData);
       setProyectos(proyectosData);
-      
-      // Ahora sí podemos llamar a la función porque ya fue declarada arriba
       procesarGrafico(donacionesData);
       
       setLoading(false);
     };
 
     loadData();
-  }, []); // Array vacío para ejecutar solo al inicio
+  }, []);
 
   const handleExport = () => {
     alert("Generando PDF de Transparencia... (Simulación)");
@@ -72,8 +64,7 @@ export default function ReportesView() {
 
   return (
     <div className="space-y-8 animate-fadeIn">
-      
-      {/* Encabezado */}
+
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h2 className="text-2xl font-bold text-slate-800">Reportes de Transparencia</h2>
@@ -86,8 +77,6 @@ export default function ReportesView() {
           <Download size={18} /> Descargar Informe PDF
         </button>
       </div>
-
-      {/* Tarjeta Principal: Gráfico Financiero */}
       <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-200">
         <div className="flex justify-between items-center mb-8">
            <div>
@@ -101,8 +90,6 @@ export default function ReportesView() {
               <Calendar size={14} /> Este Año
            </button>
         </div>
-        
-        {/* Gráfico Dinámico */}
         {chartData.length === 0 ? (
           <div className="h-48 flex items-center justify-center text-slate-400 bg-slate-50 rounded-xl border border-dashed border-slate-200">
             No hay datos financieros registrados aún.
@@ -128,8 +115,6 @@ export default function ReportesView() {
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Tabla de Desglose por Proyecto */}
         <div className="lg:col-span-2 bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
           <div className="p-5 border-b border-slate-100 flex justify-between items-center bg-slate-50/50">
             <h3 className="font-bold text-slate-700">Asignación de Recursos</h3>
@@ -177,7 +162,6 @@ export default function ReportesView() {
           </table>
         </div>
 
-        {/* Resumen Rápido / Documentos */}
         <div className="bg-slate-800 text-white p-6 rounded-2xl shadow-xl flex flex-col justify-between relative overflow-hidden">
           <div className="absolute top-0 right-0 w-32 h-32 bg-white/5 rounded-full -mr-10 -mt-10 blur-2xl"></div>
           
