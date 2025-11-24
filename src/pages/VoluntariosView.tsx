@@ -7,8 +7,7 @@ import { Plus, Search } from 'lucide-react';
 export default function VoluntariosView() {
   const [voluntarios, setVoluntarios] = useState<Voluntario[]>([]);
   const [loading, setLoading] = useState(true);
-  
-  // Estado inicial del formulario
+
   const initialFormState = {
     nombre: '', apellido: '', correo: '', telefono: '',
     disponibilidad: '', habilidades: '', tipo_voluntario: 'REGULAR' as TipoVoluntario
@@ -16,7 +15,6 @@ export default function VoluntariosView() {
   const [formData, setFormData] = useState(initialFormState);
 
   const loadVoluntarios = async () => {
-    // Usamos la nueva API genérica con key para persistencia
     const data = await api.getAll<Voluntario>('voluntarios', VOLUNTARIOS_MOCK);
     setVoluntarios(data);
     setLoading(false);
@@ -37,10 +35,9 @@ export default function VoluntariosView() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulamos la creación de un objeto completo
     const newVol: Voluntario = {
       ...formData,
-      id_voluntario: Date.now(), // ID temporal
+      id_voluntario: Date.now(),
       id_usuario: Date.now() + 1,
       rol: 'VOLUNTARIO',
       fecha_registro: new Date().toISOString().split('T')[0]
@@ -58,7 +55,6 @@ export default function VoluntariosView() {
 
   return (
     <div className="space-y-6">
-      {/* Tarjeta de Formulario */}
       <div className="bg-white p-6 rounded-xl shadow-sm border border-slate-200">
         <h2 className="text-lg font-semibold mb-4 flex items-center gap-2">
           <Plus size={20} className="text-blue-600"/> Nuevo Registro
@@ -81,7 +77,6 @@ export default function VoluntariosView() {
         </form>
       </div>
 
-      {/* Tabla de Resultados */}
       <div className="bg-white rounded-xl shadow-sm border border-slate-200 overflow-hidden">
         <div className="p-4 border-b border-slate-100 bg-slate-50 flex justify-between items-center">
           <h3 className="font-semibold text-slate-700">Listado de Personal</h3>
