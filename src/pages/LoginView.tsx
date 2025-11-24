@@ -14,7 +14,7 @@ export default function LoginView() {
     e.preventDefault();
     const success = login(email, password);
     if (success) {
-      navigate('/'); // Redirigir al Dashboard
+      navigate('/');
     } else {
       setError('Credenciales inválidas. Prueba: admin@ong.com / 123456');
     }
@@ -22,15 +22,11 @@ export default function LoginView() {
 
   return (
     <div className="min-h-screen bg-slate-900 flex items-center justify-center p-4">
-      {/* Fondo decorativo */}
       <div className="absolute inset-0 overflow-hidden">
         <div className="absolute -top-[30%] -left-[10%] w-[70%] h-[70%] rounded-full bg-teal-500/10 blur-[120px]"></div>
         <div className="absolute bottom-[0%] right-[0%] w-[50%] h-[50%] rounded-full bg-blue-600/10 blur-[100px]"></div>
       </div>
-
       <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl overflow-hidden flex relative z-10 min-h-[600px]">
-        
-        {/* Lado Izquierdo: Visual */}
         <div className="hidden md:flex w-1/2 bg-gradient-to-br from-slate-800 to-slate-900 p-12 flex-col justify-between text-white relative">
           <div className="absolute inset-0 bg-[url('https://images.unsplash.com/photo-1593113598332-cd288d649433?ixlib=rb-4.0.3&auto=format&fit=crop&w=1000&q=80')] bg-cover opacity-20 mix-blend-overlay"></div>
           
@@ -49,7 +45,6 @@ export default function LoginView() {
           </div>
         </div>
 
-        {/* Lado Derecho: Formulario */}
         <div className="w-full md:w-1/2 p-12 flex flex-col justify-center bg-white">
           <div className="mb-8">
             <h2 className="text-2xl font-bold text-slate-800">Bienvenido de nuevo</h2>
@@ -89,7 +84,7 @@ export default function LoginView() {
 
             {error && (
               <div className="p-3 bg-red-50 text-red-600 text-sm rounded-lg flex items-center">
-                ⚠️ {error}
+                 {error}
               </div>
             )}
 
