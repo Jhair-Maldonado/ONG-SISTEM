@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import { api } from '../services/api';
 import { VOLUNTARIOS_MOCK, PROYECTOS_MOCK, DONACIONES_MOCK } from '../data/mockData';
 import { Users, FolderHeart, Wallet, Activity, ArrowUpRight, Calendar } from 'lucide-react';
-// Importamos los tipos para que TypeScript no se queje
 import type { Donacion, Proyecto, Voluntario } from '../interfaces/types';
 
 type Actividad = {
@@ -27,16 +26,11 @@ export default function DashboardView() {
   useEffect(() => {
     const cargarDashboard = async () => {
       setLoading(true);
-      // CAMBIO CLAVE: Ahora pasamos el nombre de la colección ('voluntarios', etc.)
-      // Esto asegura que lea lo mismo que guardaste en las otras pantallas
       const [voluntarios, proyectos, donaciones] = await Promise.all([
         api.getAll<Voluntario>('voluntarios', VOLUNTARIOS_MOCK),
         api.getAll<Proyecto>('proyectos', PROYECTOS_MOCK),
         api.getAll<Donacion>('donaciones', DONACIONES_MOCK)
       ]);
-
-      // LÓGICA DE SUMA DE RECAUDACIÓN
-      // Aquí es donde ocurre la magia: Filtramos solo las MONETARIAS y sumamos
       const recaudado = donaciones
         .filter(d => d.tipo_donacion === 'MONETARIA')
         .reduce((acc, curr) => acc + (Number(curr.monto) || 0), 0);
@@ -47,8 +41,6 @@ export default function DashboardView() {
         proyectosActivos: proyectos.filter(p => p.estado === 'EJECUCION').length,
         recaudacionTotal: recaudado
       });
-
-      // Generar Feed Mejorado
       const actsVol: Actividad[] = voluntarios.map(v => ({
         id: `v-${v.id_voluntario}`,
         tipo: 'VOL',
@@ -90,10 +82,8 @@ export default function DashboardView() {
   return (
     <div className="space-y-8 font-sans">
       
-      {/* 1. SECCIÓN DE TARJETAS KPI */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        
-        {/* ... (Tarjeta Voluntarios igual) ... */}
+
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-blue-50 text-blue-600 rounded-xl group-hover:bg-blue-600 group-hover:text-white transition-colors">
@@ -108,8 +98,6 @@ export default function DashboardView() {
             <h3 className="text-3xl font-bold text-slate-800 mt-1">{stats.totalVoluntarios}</h3>
           </div>
         </div>
-
-        {/* ... (Tarjeta Proyectos igual) ... */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-violet-50 text-violet-600 rounded-xl group-hover:bg-violet-600 group-hover:text-white transition-colors">
@@ -124,8 +112,6 @@ export default function DashboardView() {
             <h3 className="text-3xl font-bold text-slate-800 mt-1">{stats.totalProyectos}</h3>
           </div>
         </div>
-
-        {/* --- TARJETA RECAUDACIÓN (LA QUE TE INTERESA) --- */}
         <div className="bg-gradient-to-br from-slate-900 to-slate-800 p-6 rounded-2xl shadow-lg text-white hover:shadow-2xl hover:-translate-y-1 transition-all duration-300 relative overflow-hidden">
           <div className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-white/10 rounded-full blur-2xl"></div>
           
@@ -136,19 +122,13 @@ export default function DashboardView() {
           </div>
           <div className="relative z-10">
             <p className="text-sm font-medium text-slate-300">Recaudación Total</p>
-            {/* AQUÍ SE MUESTRA LA SUMA */}
             <h3 className="text-3xl font-bold text-white mt-1">S/ {stats.recaudacionTotal.toLocaleString('es-PE')}</h3>
-            
-            {/* Barra de progreso simulada */}
             <div className="w-full bg-slate-700/50 h-1 mt-4 rounded-full overflow-hidden">
-               {/* Calculamos ancho basado en una meta ficticia de 50,000 */}
                <div className="bg-emerald-400 h-full transition-all duration-1000" style={{ width: `${Math.min((stats.recaudacionTotal / 50000) * 100, 100)}%` }}></div>
             </div>
             <p className="text-[10px] text-slate-400 mt-2 text-right">Meta anual: S/ 50,000</p>
           </div>
         </div>
-
-        {/* ... (Tarjeta Impacto igual) ... */}
         <div className="bg-white p-6 rounded-2xl shadow-sm border border-slate-100 hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
           <div className="flex justify-between items-start mb-4">
             <div className="p-3 bg-orange-50 text-orange-600 rounded-xl group-hover:bg-orange-500 group-hover:text-white transition-colors">
@@ -162,11 +142,7 @@ export default function DashboardView() {
           </div>
         </div>
       </div>
-
-      {/* 2. SECCIÓN PRINCIPAL (GRÁFICO + FEED) */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        
-        {/* Gráfico Financiero Estilizado */}
         <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100 lg:col-span-2">
           <div className="flex justify-between items-center mb-8">
              <div>
@@ -190,8 +166,6 @@ export default function DashboardView() {
              ))}
           </div>
         </div>
-
-        {/* Feed de Actividad con Timeline */}
         <div className="bg-white p-8 rounded-3xl shadow-sm border border-slate-100">
           <h3 className="text-xl font-bold text-slate-800 mb-6">Actividad Reciente</h3>
           <div className="relative border-l-2 border-slate-100 ml-3 space-y-8">
