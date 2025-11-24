@@ -1,5 +1,4 @@
 import { createContext, useContext, useState } from 'react';
-// CORRECCIÓN 1: Importamos el tipo de forma explícita
 import type { ReactNode } from 'react';
 import type { Usuario } from '../interfaces/types';
 
@@ -11,8 +10,6 @@ interface AuthContextType {
 }
 
 const AuthContext = createContext<AuthContextType>(null!);
-
-// Usuario simulado
 const MOCK_ADMIN: Usuario = {
   id_usuario: 1,
   nombre: 'Jhair',
@@ -22,9 +19,6 @@ const MOCK_ADMIN: Usuario = {
 };
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  // CORRECCIÓN 2: Inicialización Perezosa (Lazy Initialization)
-  // Leemos el localStorage directamente en el valor inicial del estado.
-  // Esto elimina la necesidad del useEffect y evita el renderizado en cascada.
   const [user, setUser] = useState<Usuario | null>(() => {
     const storedUser = localStorage.getItem('ong_user');
     return storedUser ? JSON.parse(storedUser) : null;
@@ -50,7 +44,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     </AuthContext.Provider>
   );
 };
-
-// CORRECCIÓN 3: Ignoramos la regla de Fast Refresh para este export específico
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);
