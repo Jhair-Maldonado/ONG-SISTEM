@@ -1,17 +1,8 @@
 import type { EstadoProyecto } from '../interfaces/types';
-
-/**
- * Calcula el estado de un proyecto en base a sus fechas.
- * - si la fecha actual es anterior a fecha_inicio -> 'PLAN'
- * - si está entre fecha_inicio y fecha_fin (inclusive) -> 'EJECUCION'
- * - si la fecha actual es posterior a fecha_fin -> 'FINALIZADO'
- */
 export const calcularEstado = (inicio: string, fin: string): EstadoProyecto => {
   const hoy = new Date();
   const fechaInicio = new Date(inicio);
   const fechaFin = new Date(fin);
-
-  // Reseteamos horas para comparar solo fechas
   hoy.setHours(0, 0, 0, 0);
   fechaInicio.setHours(0, 0, 0, 0);
   fechaFin.setHours(0, 0, 0, 0);
