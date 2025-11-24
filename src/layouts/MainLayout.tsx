@@ -12,13 +12,10 @@ export default function MainLayout() {
   };
 
   return (
-    // CAMBIO: Quitamos cualquier clase bg-... aquí para dejar que index.css controle el fondo global (#EEF2F6)
     <div className="flex min-h-screen"> 
       <Sidebar />
       
       <div className="flex-1 ml-72 flex flex-col relative">
-        
-        {/* Header: Ahora es blanco puro (bg-white) para contrastar con el fondo gris de la app */}
         <header className="sticky top-0 z-20 bg-white/90 backdrop-blur-md border-b border-slate-200 h-20 flex items-center justify-between px-8 shadow-sm">
           <div>
             <h1 className="text-2xl font-bold text-slate-800 tracking-tight">{getTitle()}</h1>
@@ -26,7 +23,6 @@ export default function MainLayout() {
           </div>
 
           <div className="flex items-center gap-6">
-            {/* Barra de búsqueda con fondo grisáceo interno para contraste */}
             <div className="hidden md:flex items-center bg-slate-100/80 border border-slate-200 rounded-full px-4 py-2 focus-within:ring-2 focus-within:ring-blue-500/20 focus-within:border-blue-400 transition-all w-64">
                <Search size={18} className="text-slate-400" />
                <input placeholder="Buscar..." className="bg-transparent border-none outline-none text-sm ml-2 w-full text-slate-600 placeholder:text-slate-400"/>
@@ -38,8 +34,6 @@ export default function MainLayout() {
             </button>
           </div>
         </header>
-
-        {/* Main Content */}
         <main className="p-8 flex-1 overflow-auto">
           <div className="max-w-7xl mx-auto animate-fadeIn">
             <Outlet />
