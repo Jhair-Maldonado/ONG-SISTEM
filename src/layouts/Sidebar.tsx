@@ -3,7 +3,6 @@ import { useAuth } from '../context/AuthContext';
 import { LayoutDashboard, Users, FolderHeart, Gift, FileBarChart, LogOut } from 'lucide-react';
 
 export default function Sidebar() {
-  // Función para estilos dinámicos del menú
   const navClass = ({ isActive }: { isActive: boolean }) => 
     `group flex items-center gap-3 px-4 py-3.5 mx-3 rounded-xl text-sm font-medium transition-all duration-300 ${
       isActive 
@@ -11,12 +10,10 @@ export default function Sidebar() {
         : 'text-slate-400 hover:bg-white/5 hover:text-white hover:translate-x-1'
     }`;
 
-  const { logout, user } = useAuth(); // Usamos el hook
+  const { logout, user } = useAuth();
 
   return (
-    // Fondo oscuro profundo con un degradado muy sutil hacia abajo
     <aside className="fixed left-0 top-0 h-screen w-72 bg-slate-900 border-r border-white/5 flex flex-col z-20 shadow-2xl">
-      {/* Logo Area */}
       <div className="p-8 pb-8">
         <div className="flex items-center gap-3">
           <div className="w-10 h-10 bg-gradient-to-br from-teal-400 to-blue-600 rounded-xl flex items-center justify-center shadow-lg shadow-teal-500/20">
@@ -28,8 +25,6 @@ export default function Sidebar() {
           </div>
         </div>
       </div>
-      
-      {/* Navigation */}
       <nav className="flex-1 px-2 space-y-1 overflow-y-auto">
         <p className="px-5 text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2 mt-2">Principal</p>
         <NavLink to="/" className={navClass}>
@@ -50,8 +45,6 @@ export default function Sidebar() {
           <FileBarChart size={20} className="transition-transform group-hover:scale-110" /> Reportes
         </NavLink>
       </nav>
-
-      {/* User Profile - Bottom */}
       <div className="p-4 mt-auto border-t border-white/5">
         <div className="flex items-center justify-between gap-3 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition-colors group">
           <div className="flex items-center gap-3">
