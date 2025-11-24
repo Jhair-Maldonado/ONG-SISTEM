@@ -8,8 +8,6 @@ import DashboardView from './pages/DashboardView';
 import LoginView from './pages/LoginView';
 import ReportesView from './pages/ReportesView';
 import type { ReactElement } from 'react';
-
-// CORRECCIÓN 2: Usamos ReactElement en lugar de JSX.Element
 const ProtectedRoute = ({ children }: { children: ReactElement }) => {
   const { isAuthenticated } = useAuth();
   if (!isAuthenticated) {
@@ -23,10 +21,7 @@ function App() {
     <AuthProvider>
       <BrowserRouter>
         <Routes>
-          {/* Ruta Pública */}
           <Route path="/login" element={<LoginView />} />
-
-          {/* Rutas Privadas (Protegidas) */}
           <Route path="/" element={
             <ProtectedRoute>
               <MainLayout />
