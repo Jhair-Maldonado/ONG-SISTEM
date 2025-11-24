@@ -1,0 +1,39 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', sans-serif;
+    -webkit-font-smoothing: antialiased;
+  }
+  
+  body {
+    /* CAMBIO CLAVE: Usamos un Hex específico (#EEF2F6) que es un gris-azulado más oscuro que el blanco.
+       Esto reducirá el brillo excesivo inmediatamente. */
+    background-color: #EEF2F6; 
+    @apply text-slate-800;
+  }
+}
+
+@layer components {
+  /* Inputs: Fondo blanco puro para que resalten sobre el fondo gris de la página */
+  .input-base {
+    @apply w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-blue-500/40 focus:border-blue-500 transition-all placeholder:text-slate-400 shadow-sm;
+  }
+
+  /* Botón primario: Un poco más de sombra */
+  .btn-primary {
+    @apply bg-blue-600 text-white px-4 py-2.5 rounded-xl font-medium hover:bg-blue-700 active:scale-95 transition-all shadow-lg shadow-blue-600/20 flex items-center justify-center gap-2;
+  }
+}
+
+@layer utilities {
+  /* Scrollbar personalizado */
+  ::-webkit-scrollbar { width: 6px; height: 6px; }
+  ::-webkit-scrollbar-track { background: transparent; }
+  ::-webkit-scrollbar-thumb { @apply bg-slate-400/50 rounded-full; }
+  ::-webkit-scrollbar-thumb:hover { @apply bg-slate-500/70; }
+}
