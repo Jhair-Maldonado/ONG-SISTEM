@@ -29,10 +29,6 @@ export const VOLUNTARIOS_MOCK: Voluntario[] = [
   }
 ];
 
-// src/data/mockData.ts
-
-// ... (Mantén tus imports y la lista de voluntarios igual) ...
-
 export const PROYECTOS_MOCK: Proyecto[] = [
   {
     id_proyecto: 1,
@@ -40,7 +36,7 @@ export const PROYECTOS_MOCK: Proyecto[] = [
     descripcion: "Recolección de abrigos para zonas altoandinas.",
     fecha_inicio: "2024-01-01",
     fecha_fin: "2024-03-30",
-    estado: "FINALIZADO", // El sistema lo calculará como Finalizado (pasado)
+    estado: "FINALIZADO",
     presupuesto: 5000,
     progreso: 100
   },
@@ -49,8 +45,8 @@ export const PROYECTOS_MOCK: Proyecto[] = [
     titulo: "Comedor Popular San Juan",
     descripcion: "Construcción y abastecimiento de comedor diario.",
     fecha_inicio: "2024-06-01", 
-    fecha_fin: "2025-12-31", // Fecha presente/futura cercana
-    estado: "EJECUCION", // El sistema lo calculará como Ejecución (presente)
+    fecha_fin: "2025-12-31",
+    estado: "EJECUCION",
     presupuesto: 15000,
     progreso: 45
   },
@@ -58,14 +54,12 @@ export const PROYECTOS_MOCK: Proyecto[] = [
     id_proyecto: 3,
     titulo: "Talleres Digitales 2026",
     descripcion: "Capacitación en computación básica para adultos mayores.",
-    fecha_inicio: "2026-01-01", // Fecha futura
+    fecha_inicio: "2026-01-01",
     fecha_fin: "2026-06-30",
-    estado: "PLAN", // El sistema lo calculará como Planificación (futuro)
+    estado: "PLAN",
     presupuesto: 8000,
     progreso: 0
   }
 ];
-
-// ... (Mantén donaciones igual) ...
 
 export const DONACIONES_MOCK: Donacion[] = [];
