@@ -1,9 +1,7 @@
 import { useEffect, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { api } from '../services/api';
-// IMPORTANTE: Importamos también los Mocks de Donaciones
 import { PROYECTOS_MOCK, DONACIONES_MOCK } from '../data/mockData';
-// Importamos el tipo Donacion
 import type { Proyecto, Donacion } from '../interfaces/types';
 import { calcularEstado } from '../utils/projectUtils';
 import ProjectCard from './ProjectCard';
@@ -25,35 +23,23 @@ export default function ProyectosView() {
   const loadProyectos = async () => {
     setLoading(true);
     try {
-      // 1. CARGAMOS TODO: Proyectos Y Donaciones
       const [proyectosData, donacionesData] = await Promise.all([
         api.getAll<Proyecto>('proyectos', PROYECTOS_MOCK),
         api.getAll<Donacion>('donaciones', DONACIONES_MOCK)
       ]);
-
-      // 2. PROCESAMIENTO INTELIGENTE
       const processedData = proyectosData.map(p => {
-        // A. Calculamos el estado temporal (Plan/Ejecución)
         const estadoCalculado = calcularEstado(p.fecha_inicio, p.fecha_fin);
-
-        // B. Calculamos el PROGRESO FINANCIERO (Donaciones vs Presupuesto)
-        // Filtramos donaciones que sean para ESTE proyecto y sean MONETARIAS
         const totalRecaudado = donacionesData
           .filter(d => d.id_proyecto === p.id_proyecto && d.tipo_donacion === 'MONETARIA')
           .reduce((acc, d) => acc + Number(d.monto), 0);
-
-        // Regla de 3 simple: (Recaudado * 100) / Presupuesto
-        // Math.min(..., 100) es para que no se pase del 100% si recaudamos de más
         let porcentajeAvance = 0;
         if (p.presupuesto > 0) {
           porcentajeAvance = Math.round((totalRecaudado / p.presupuesto) * 100);
         }
-
-        // Devolvemos el proyecto con los datos calculados al vuelo
         return {
           ...p,
           estado: estadoCalculado,
-          progreso: Math.min(porcentajeAvance, 100) // Actualizamos el progreso visual
+          progreso: Math.min(porcentajeAvance, 100)
         };
       });
 
@@ -81,12 +67,11 @@ export default function ProyectosView() {
       fecha_inicio: newProject.fecha_inicio,
       fecha_fin: newProject.fecha_fin,
       presupuesto: presupuestoNum,
-      progreso: 0, // Empieza en 0% porque no tiene donaciones aún
+      progreso: 0,
       estado: calcularEstado(newProject.fecha_inicio, newProject.fecha_fin)
     };
 
     await api.create('proyectos', proyectoGuardar);
-    // Recargamos todo para que la lista se actualice correctamente
     loadProyectos(); 
     closeModal();
     alert("Proyecto creado exitosamente");
@@ -124,8 +109,6 @@ export default function ProyectosView() {
           ))}
         </div>
       )}
-
-      {/* --- MODAL (Mismo código que tenías antes con el Portal) --- */}
       {isModalOpen && createPortal(
         <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
           <div 
